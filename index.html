@@ -748,6 +748,11 @@ function confetti(){
 }
 
 render();
+
+/* オフライン対応（一度開けばドーム内で圏外でも動く） */
+if ("serviceWorker" in navigator) {
+  try { navigator.serviceWorker.register("./sw.js").catch(()=>{}); } catch(e){}
+}
 </script>
 </body>
 </html>
