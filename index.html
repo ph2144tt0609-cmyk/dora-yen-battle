@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0d1b2e">
+<title>ドラ円バトル｜7/4 中日×巨人 予想ゲーム</title>
+<style>
+  :root{
+    --bg:#0d1b2e; --card:#16263d; --card2:#1d3050; --line:#2b4266;
+    --txt:#eaf2ff; --sub:#9db4d6;
+    --dra:#4da3ff; --gia:#ff9b3d; --gold:#ffd75e; --green:#5ce0a1; --red:#ff7a7a;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0;}
+  body{
+    background:var(--bg); color:var(--txt);
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic UI","Yu Gothic",Meiryo,sans-serif;
+    font-size:16px; line-height:1.55;
+    padding-bottom:84px;
+  }
+  header{
+    position:sticky; top:0; z-index:10;
+    background:linear-gradient(180deg,#0a1626 0%,#0d1b2e 100%);
+    border-bottom:1px solid var(--line);
+    padding:10px 14px 8px; text-align:center;
+  }
+  header h1{margin:0; font-size:20px; letter-spacing:1px;}
+  header h1 .coin{color:var(--gold);}
+  header .gameinfo{font-size:12px; color:var(--sub); margin-top:2px;}
+  header .gameinfo b.d{color:var(--dra);} header .gameinfo b.g{color:var(--gia);}
+  main{max-width:560px; margin:0 auto; padding:14px;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; margin-bottom:14px;}
+  .card h2{margin:0 0 10px; font-size:17px;}
+  .card h2 .em{color:var(--gold);}
+  .sub{color:var(--sub); font-size:13px;}
+  .btn{
+    display:inline-block; border:none; border-radius:14px; cursor:pointer;
+    font-size:16px; font-weight:bold; padding:13px 18px; color:#08131f;
+    background:var(--dra); font-family:inherit;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn.big{width:100%; font-size:18px; padding:16px;}
+  .btn.gold{background:var(--gold);}
+  .btn.green{background:var(--green);}
+  .btn.gray{background:#3a4f70; color:var(--txt);}
+  .btn.warn{background:var(--red);}
+  .btn.mini{font-size:13px; padding:8px 12px; border-radius:10px;}
+  .btn:disabled{opacity:.35;}
+  .row{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  .spread{justify-content:space-between;}
+  input[type=text], input[type=number]{
+    background:#0e1c31; color:var(--txt); border:1px solid var(--line);
+    border-radius:10px; padding:12px; font-size:16px; width:100%; font-family:inherit;
+  }
+  .chip{
+    display:inline-flex; align-items:center; gap:5px;
+    background:var(--card2); border:2px solid var(--line); border-radius:999px;
+    padding:9px 14px; font-size:15px; font-weight:bold; cursor:pointer;
+  }
+  .chip.on{border-color:var(--gold); background:#33405c;}
+  .chip .ok{color:var(--green);}
+  .chip .kid{font-size:11px; color:var(--gia);}
+  .moneybar{
+    position:sticky; top:64px; z-index:9;
+    background:#101f36ee; border:1px solid var(--line); border-radius:14px;
+    padding:10px 12px; margin-bottom:12px; display:flex; justify-content:space-between;
+    font-size:14px; backdrop-filter:blur(4px);
+  }
+  .moneybar b{font-size:17px;}
+  .moneybar .save b{color:var(--green);}
+  .moneybar .bet b{color:var(--gold);}
+  .qcard{background:var(--card2); border-radius:14px; padding:11px 12px; margin-bottom:10px;}
+  .qcard .qtitle{font-weight:bold; font-size:15px; margin-bottom:8px;}
+  .qcard .qtitle .oa{color:var(--gold); font-size:12px; border:1px solid var(--gold); border-radius:6px; padding:0 5px; margin-right:5px;}
+  .opt{
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    padding:7px 0; border-top:1px dashed #33496e;
+  }
+  .opt .lab{flex:1; font-size:14px;}
+  .opt .odds{color:var(--gold); font-weight:bold; font-size:14px; white-space:nowrap;}
+  .stepper{display:flex; align-items:center; gap:2px;}
+  .stepper button{
+    width:42px; height:42px; border-radius:12px; border:none; font-size:22px; font-weight:bold;
+    background:#3a4f70; color:var(--txt); cursor:pointer; font-family:inherit;
+  }
+  .stepper button:active{transform:scale(.94);}
+  .stepper .amt{min-width:64px; text-align:center; font-weight:bold; font-size:15px;}
+  .stepper .amt.z{color:#55688a;}
+  .stepper .amt.nz{color:var(--gold);}
+  .navbar{
+    position:fixed; bottom:0; left:0; right:0; z-index:20;
+    background:#0a1626f2; border-top:1px solid var(--line);
+    display:flex; justify-content:space-around; padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+    backdrop-filter:blur(6px);
+  }
+  .navbar button{
+    background:none; border:none; color:var(--sub); font-size:10.5px; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:1px; padding:4px 8px;
+    border-radius:10px; font-family:inherit; min-width:58px;
+  }
+  .navbar button .ico{font-size:21px;}
+  .navbar button.on{color:var(--gold); background:#22314e;}
+  .rankrow{
+    display:flex; align-items:center; gap:10px; background:var(--card2);
+    border-radius:12px; padding:11px 12px; margin-bottom:8px;
+  }
+  .rankrow .rk{font-size:19px; font-weight:bold; width:44px; text-align:center;}
+  .rankrow .nm{flex:1; font-weight:bold; font-size:16px;}
+  .rankrow .as{font-weight:bold; color:var(--gold);}
+  .rankrow.top1{border:2px solid var(--gold); background:#2c2f1e;}
+  .badge{font-size:11px; border-radius:6px; padding:1px 6px; background:#3a4f70;}
+  .badge.win{background:var(--gold); color:#082;}
+  .kkb{background:#fdf6e3; color:#3d2f1e; border-radius:16px; padding:16px; margin-bottom:14px;}
+  .kkb h3{margin:0 0 8px; font-size:16px; text-align:center; border-bottom:2px dashed #c9b98f; padding-bottom:8px;}
+  .kkb table{width:100%; border-collapse:collapse; font-size:14px;}
+  .kkb td{padding:5px 2px; border-bottom:1px dotted #d8c9a3;}
+  .kkb td.v{text-align:right; font-weight:bold; white-space:nowrap;}
+  .kkb tr.total td{border-top:2px solid #3d2f1e; border-bottom:none; font-size:17px; font-weight:bold; padding-top:8px;}
+  .kkb .plus{color:#1a7f4b;} .kkb .minus{color:#c0392b;}
+  .kkb .hitlist{font-size:12px; margin-top:8px; color:#6b5b3e;}
+  .resq{background:var(--card2); border-radius:12px; padding:10px 12px; margin-bottom:9px;}
+  .resq .t{font-size:14px; font-weight:bold; margin-bottom:7px;}
+  .resq .t .st{float:right; font-size:12px;}
+  .resq .st.ok{color:var(--green);} .resq .st.ng{color:var(--sub);}
+  .resq .obtns{display:flex; flex-wrap:wrap; gap:6px;}
+  .obtn{
+    border:2px solid var(--line); background:#0e1c31; color:var(--txt);
+    border-radius:10px; padding:8px 11px; font-size:13px; cursor:pointer; font-family:inherit;
+  }
+  .obtn.sel{border-color:var(--green); background:#153a2e; font-weight:bold;}
+  .obtn.none.sel{border-color:var(--red); background:#3a2030;}
+  .obtn.void.sel{border-color:var(--sub); background:#2c3a52;}
+  .scorebox{display:flex; justify-content:center; align-items:center; gap:14px; margin:8px 0 12px;}
+  .scorebox .team{text-align:center; font-weight:bold;}
+  .scorebox .team.d{color:var(--dra);} .scorebox .team.g{color:var(--gia);}
+  .scorebox .sc{font-size:34px; font-weight:bold; min-width:52px; text-align:center;}
+  .steps{margin:0; padding-left:0; list-style:none;}
+  .steps li{padding:7px 0 7px 34px; position:relative; font-size:14px; border-bottom:1px dashed #2b4266;}
+  .steps li:last-child{border-bottom:none;}
+  .steps li::before{content:attr(data-n); position:absolute; left:0; top:7px; width:24px; height:24px; border-radius:50%; background:#3a4f70; text-align:center; line-height:24px; font-size:12px; font-weight:bold;}
+  .steps li.done{color:var(--sub);} .steps li.done::before{content:"✓"; background:var(--green); color:#08131f;}
+  .steps li.now{font-weight:bold;} .steps li.now::before{background:var(--gold); color:#08131f;}
+  .drum{text-align:center; font-size:26px; font-weight:bold; padding:26px 0; animation:shake .12s infinite; color:var(--gold);}
+  @keyframes shake{0%{transform:translateX(-3px);}50%{transform:translateX(3px);}100%{transform:translateX(-3px);}}
+  .confetti-p{position:fixed; top:-20px; z-index:99; border-radius:3px; pointer-events:none; animation:fall linear forwards;}
+  @keyframes fall{to{transform:translateY(110vh) rotate(720deg);}}
+  .center{text-align:center;}
+  .mt{margin-top:10px;} .mb{margin-bottom:10px;}
+  .hr{border:none; border-top:1px dashed var(--line); margin:12px 0;}
+  .winbanner{
+    text-align:center; background:linear-gradient(135deg,#3d3517,#57492a); border:2px solid var(--gold);
+    border-radius:16px; padding:18px; margin-bottom:14px;
+  }
+  .winbanner .crown{font-size:40px;}
+  .winbanner .wname{font-size:24px; font-weight:bold; color:var(--gold);}
+  .betlist{font-size:12.5px; color:var(--sub); margin-top:6px;}
+  .betlist .hit{color:var(--green); font-weight:bold;}
+  .betlist .miss{color:var(--red);}
+  .betlist .pend{color:var(--gold);}
+  .modal-bg{position:fixed; inset:0; background:#000a; z-index:50; display:flex; align-items:center; justify-content:center; padding:16px;}
+  .modal{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; width:100%; max-width:480px; max-height:80vh; overflow-y:auto;}
+</style>
+</head>
+<body>
+<header>
+  <h1>⚾ ドラ<span class="coin">円</span>バトル</h1>
+  <div class="gameinfo">2026/7/4　<b class="d">中日ドラゴンズ</b> × <b class="g">読売ジャイアンツ</b>　@バンテリンドーム</div>
+</header>
+<main id="app"></main>
+<nav class="navbar" id="nav"></nav>
+
+<script>
+"use strict";
+/* ================= 状態管理 ================= */
+const LS_KEY = "doraYenBattle_v1";
+const RULE = { start:1000, unit:100, interest:0.10, childBoost:1.2 };
+
+function defaultQuestions(){
+  return [
+    {id:"q1", title:"勝敗（どっちが かつ？）", big:false, options:[
+      {id:"q1a", label:"中日が かつ", odds:2.2},
+      {id:"q1b", label:"巨人が かつ", odds:1.7},
+      {id:"q1c", label:"ひきわけ", odds:11},
+    ], result:null},
+    {id:"q2", title:"2チームの合計得点（ごうけいとくてん）", big:false, options:[
+      {id:"q2a", label:"0〜4点", odds:2.8},
+      {id:"q2b", label:"5〜8点", odds:1.9},
+      {id:"q2c", label:"9点いじょう", odds:3.5},
+    ], result:null},
+    {id:"q3", title:"先制（さきに点をとるのは？）", big:false, options:[
+      {id:"q3a", label:"中日", odds:1.9},
+      {id:"q3b", label:"巨人", odds:1.9},
+    ], result:null},
+    {id:"q4", title:"ホームラン", big:false, options:[
+      {id:"q4a", label:"出る", odds:1.6},
+      {id:"q4b", label:"出ない", odds:2.6},
+    ], result:null},
+    {id:"q5", title:"盗塁（とうるい）", big:false, options:[
+      {id:"q5a", label:"ある", odds:2.0},
+      {id:"q5b", label:"ない", odds:1.9},
+    ], result:null},
+    {id:"q6", title:"逆転（ぎゃくてん）はある？", big:false, options:[
+      {id:"q6a", label:"5回おわりにリードした方が そのまま かつ", odds:1.5},
+      {id:"q6b", label:"逆転が おこる", odds:3.5},
+    ], result:null},
+    {id:"q7", title:"サヨナラで 試合が きまる", big:true, options:[
+      {id:"q7a", label:"おきる！", odds:15},
+    ], result:null},
+    {id:"q8", title:"両方の先発（せんぱつ）投手が 5回もたない", big:true, options:[
+      {id:"q8a", label:"おきる！", odds:8},
+    ], result:null},
+    {id:"q9", title:"猛打賞（もうだしょう：1人で3安打）が 出る", big:true, options:[
+      {id:"q9a", label:"おきる！", odds:6},
+    ], result:null},
+  ];
+}
+function newState(){
+  return {
+    v:1, phase:"setup", // setup → betting → locked → settled
+    players:[], questions:defaultQuestions(),
+    score:{d:null, g:null},
+    curBettor:null, curView:"home", curKakeibo:null,
+    revealCount:0, revealing:false, seq:1,
+  };
+}
+let S = load();
+function load(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(raw){ const o = JSON.parse(raw); if(o && o.v===1) return o; }
+  }catch(e){}
+  return newState();
+}
+function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){} }
+function upd(){ save(); render(); }
+
+/* ================= ヘルパー ================= */
+const $ = (id)=>document.getElementById(id);
+const esc = (s)=>String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt = (n)=>Number(n).toLocaleString("ja-JP");
+const player = (pid)=>S.players.find(p=>p.id===pid);
+function optOf(optId){
+  for(const q of S.questions){ const o = q.options.find(o=>o.id===optId); if(o) return {q,o}; }
+  return null;
+}
+const betTotal = (p)=>Object.values(p.bets).reduce((a,b)=>a+b,0);
+const oddsTxt = (x)=>"×"+(Math.round(x*10)/10).toLocaleString("ja-JP",{maximumFractionDigits:1});
+
+/* 精算計算（1人分） */
+function calc(p){
+  const total = betTotal(p);
+  const savings = RULE.start - total;
+  const interest = Math.round(savings * RULE.interest);
+  let payout=0, refund=0;
+  const detail=[];
+  for(const [optId, amt] of Object.entries(p.bets)){
+    if(!amt) continue;
+    const f = optOf(optId); if(!f) continue;
+    const {q,o} = f;
+    let st="pend", win=0;
+    if(q.result===o.id){
+      win = Math.round(amt * o.odds * (p.child ? RULE.childBoost : 1));
+      payout += win; st="hit";
+    }else if(q.result==="void"){
+      refund += amt; st="void";
+    }else if(q.result!==null){
+      st="miss";
+    }
+    detail.push({q, o, amt, st, win});
+  }
+  const settledAll = S.questions.every(q=>q.result!==null);
+  const asset = savings + interest + payout + refund;
+  const pending = detail.filter(d=>d.st==="pend").reduce((a,d)=>a+d.amt,0);
+  return {total, savings, interest, payout, refund, asset, pending, detail, settledAll};
+}
+function ranking(){
+  const rows = S.players.map(p=>({p, c:calc(p)}));
+  rows.sort((a,b)=>b.c.asset - a.c.asset);
+  let rank=0, prev=null;
+  rows.forEach((r,i)=>{ if(prev===null || r.c.asset<prev){ rank=i+1; prev=r.c.asset; } r.rank=rank; });
+  return rows;
+}
+
+/* ================= ナビ ================= */
+const VIEWS = [
+  {id:"home",    ico:"🏠", label:"ホーム"},
+  {id:"players", ico:"👥", label:"メンバー"},
+  {id:"bet",     ico:"🪙", label:"ベット"},
+  {id:"results", ico:"📝", label:"結果入力"},
+  {id:"settle",  ico:"🏆", label:"せいさん"},
+];
+function go(v){ S.curView=v; upd(); window.scrollTo(0,0); }
+function renderNav(){
+  $("nav").innerHTML = VIEWS.map(v=>
+    `<button class="${S.curView===v.id||(v.id==='settle'&&S.curView==='kakeibo')?'on':''}" onclick="go('${v.id}')">
+      <span class="ico">${v.ico}</span>${v.label}</button>`).join("");
+}
+
+/* ================= 各画面 ================= */
+function render(){
+  renderNav();
+  const el = $("app");
+  switch(S.curView){
+    case "home":    el.innerHTML = vHome(); break;
+    case "players": el.innerHTML = vPlayers(); break;
+    case "bet":     el.innerHTML = vBet(); break;
+    case "results": el.innerHTML = vResults(); break;
+    case "settle":  el.innerHTML = vSettle(); break;
+    case "kakeibo": el.innerHTML = vKakeibo(); break;
+    case "odds":    el.innerHTML = vOdds(); break;
+    default: el.innerHTML = vHome();
+  }
+}
+
+/* ---------- ホーム ---------- */
+function vHome(){
+  const np = S.players.length;
+  const nc = S.players.filter(p=>p.confirmed).length;
+  const nr = S.questions.filter(q=>q.result!==null).length;
+  const st = (cond)=>cond?"done":"";
+  const steps = [
+    {done:np>0, now:np===0, txt:`メンバーを登録する（いま ${np}人）`, v:"players"},
+    {done:np>0&&nc===np&&np>0&&S.phase!=="setup", now:np>0&&(nc<np||S.phase==="betting"), txt:`ぜんいんが ベットする（${nc}/${np}人 かんりょう）`, v:"bet"},
+    {done:["locked","settled"].includes(S.phase), now:np>0&&nc===np&&S.phase==="betting", txt:"プレイボール前に ベットをしめきる", v:"bet"},
+    {done:nr===S.questions.length, now:S.phase==="locked"&&nr<S.questions.length, txt:`試合をみながら 結果を入力（${nr}/${S.questions.length}）`, v:"results"},
+    {done:S.phase==="settled", now:S.phase==="locked"&&nr===S.questions.length, txt:"せいさん & 表彰式！", v:"settle"},
+  ];
+  const nowStep = steps.find(s=>s.now&&!s.done) || steps.find(s=>!s.done);
+  return `
+  <div class="card">
+    <h2>🪙 あそびかた</h2>
+    <div class="sub mb">ひとり <b style="color:var(--gold)">1,000ドラ円</b> をもらってスタート！ 試合の予想にベットしよう。つかわなかった分は<b style="color:var(--green)">貯金</b>になって、試合がおわると <b style="color:var(--green)">利息＋10%</b>！ さいごに一番お金もちだった人が優勝🏆<br>
+    こどもは配当が<b style="color:var(--gia)">1.2倍</b>になる「お子さまブースト」つき！<br>
+    <b style="color:var(--red)">※ほんもののお金は つかいません</b></div>
+  </div>
+  <div class="card">
+    <h2>📋 きょうの流れ</h2>
+    <ol class="steps">
+      ${steps.map((s,i)=>`<li data-n="${i+1}" class="${s.done?'done':''} ${s.now&&!s.done?'now':''}">${s.txt}</li>`).join("")}
+    </ol>
+    ${nowStep?`<button class="btn big gold mt" onclick="go('${nowStep.v}')">▶ ${esc(nowStep.txt.replace(/（.*）/,""))}</button>`:""}
+  </div>
+  <div class="card">
+    <div class="row spread">
+      <span class="sub">幹事（かんじ）メニュー</span>
+      <span>
+        <button class="btn mini gray" onclick="go('odds')">⚙️ オッズ編集</button>
+        <button class="btn mini warn" onclick="resetAll()">🗑 全リセット</button>
+      </span>
+    </div>
+  </div>`;
+}
+
+/* ---------- メンバー登録 ---------- */
+function addPlayer(){
+  const inp = $("newname");
+  const name = (inp.value||"").trim();
+  if(!name){ alert("なまえを入れてね"); return; }
+  if(S.players.length>=12){ alert("さいだい12人までです"); return; }
+  const child = $("newchild").checked;
+  S.players.push({id:"p"+(S.seq++), name, child, bets:{}, confirmed:false});
+  if(S.phase==="setup") S.phase="betting";
+  upd();
+}
+function toggleChild(pid){ const p=player(pid); p.child=!p.child; upd(); }
+function delPlayer(pid){
+  const p=player(pid);
+  if(!confirm(p.name+" さんを けしますか？")) return;
+  S.players = S.players.filter(x=>x.id!==pid);
+  if(S.curBettor===pid) S.curBettor=null;
+  upd();
+}
+function vPlayers(){
+  const locked = S.phase==="locked"||S.phase==="settled";
+  return `
+  <div class="card">
+    <h2>👥 メンバー登録 <span class="sub">（${S.players.length}人）</span></h2>
+    ${S.players.length===0?`<div class="sub mb">さいしょに みんなの なまえを 登録しよう！（あとから追加もOK）</div>`:""}
+    ${S.players.map(p=>`
+      <div class="rankrow">
+        <div class="nm">${esc(p.name)} ${p.child?'<span class="badge" style="background:var(--gia);color:#08131f">こども×1.2</span>':''}</div>
+        ${locked?"":`<button class="btn mini gray" onclick="toggleChild('${p.id}')">${p.child?"→おとな":"→こども"}</button>
+        <button class="btn mini warn" onclick="delPlayer('${p.id}')">けす</button>`}
+      </div>`).join("")}
+    ${locked?`<div class="sub">ベットしめきり後は へんこうできません</div>`:`
+    <hr class="hr">
+    <div class="row">
+      <input type="text" id="newname" placeholder="なまえ（例：パパ、ゆうと）" style="flex:1" maxlength="10">
+    </div>
+    <label class="row mt" style="font-size:15px"><input type="checkbox" id="newchild" style="width:22px;height:22px"> こども（配当1.2倍ブースト）</label>
+    <button class="btn big mt" onclick="addPlayer()">＋ ついかする</button>`}
+  </div>
+  ${S.players.length>0&&!locked?`<button class="btn big gold" onclick="go('bet')">🪙 ベットにすすむ →</button>`:""}`;
+}
+
+/* ---------- ベット ---------- */
+function selectBettor(pid){ S.curBettor=pid; upd(); }
+function betAdd(pid, optId, delta){
+  const p = player(pid); if(!p) return;
+  if(S.phase!=="betting"){ return; }
+  const cur = p.bets[optId]||0;
+  const next = cur + delta*RULE.unit;
+  if(next<0) return;
+  if(betTotal(p) + delta*RULE.unit > RULE.start){ alert("のこりのドラ円が たりないよ！"); return; }
+  if(next===0) delete p.bets[optId]; else p.bets[optId]=next;
+  p.confirmed=false;
+  upd();
+}
+function confirmBet(pid){
+  const p=player(pid);
+  p.confirmed=true;
+  const nxt = S.players.find(x=>!x.confirmed);
+  S.curBettor = nxt ? nxt.id : null;
+  upd();
+  if(!nxt) alert("ぜんいんのベットがかんりょう！🎉\nプレイボール前に「ベットをしめきる」を おしてね（ホームのステップ3）");
+}
+function lockBets(){
+  const notyet = S.players.filter(p=>!p.confirmed);
+  let msg = "ベットをしめきります。プレイボール後は へんこうできません。いいですか？";
+  if(notyet.length) msg = "まだ かくてい していない人がいます：\n"+notyet.map(p=>p.name).join("、")+"\n\nこのまま しめきりますか？（その人は今の内容でかくてい）";
+  if(!confirm(msg)) return;
+  S.players.forEach(p=>p.confirmed=true);
+  S.phase="locked";
+  upd();
+  alert("ベットしめきり！ 🔒\nあとは試合をたのしみながら「結果入力」してね⚾");
+}
+function unlockBets(){
+  if(!confirm("しめきりを かいじょして ベットを へんこうできるように もどしますか？")) return;
+  S.phase="betting"; S.revealCount=0;
+  upd();
+}
+function vBet(){
+  if(S.players.length===0) return `<div class="card"><h2>🪙 ベット</h2><div class="sub">さきに メンバーを登録してね</div><button class="btn big mt" onclick="go('players')">👥 メンバー登録へ</button></div>`;
+  const locked = S.phase==="locked"||S.phase==="settled";
+  const cur = S.curBettor ? player(S.curBettor) : null;
+  const chips = `<div class="row mb">${S.players.map(p=>`
+    <span class="chip ${S.curBettor===p.id?'on':''}" onclick="selectBettor('${p.id}')">
+      ${esc(p.name)}${p.child?'<span class="kid">👶</span>':''} ${p.confirmed?'<span class="ok">✓</span>':''}
+    </span>`).join("")}</div>`;
+  if(!cur){
+    return `<div class="card"><h2>🪙 ベット｜だれの番？</h2>
+      <div class="sub mb">じぶんの なまえを タップしてね（1人ずつ こうたいで入力）</div>${chips}
+      ${locked?`<div class="sub">🔒 しめきりずみ。なまえをタップすると ベット内容を 見られるよ</div>`:
+        S.players.every(p=>p.confirmed)?`<button class="btn big warn mt" onclick="lockBets()">🔒 ベットをしめきる（プレイボール！）</button>`:""}
+    </div>`;
+  }
+  const total = betTotal(cur), rest = RULE.start-total;
+  return `
+  <div class="card">
+    <h2>🪙 ${esc(cur.name)} さんのベット ${cur.child?'<span class="badge" style="background:var(--gia);color:#08131f">こども×1.2</span>':''}</h2>
+    ${chips}
+  </div>
+  <div class="moneybar">
+    <span class="bet">ベット中 <b>${fmt(total)}</b> ドラ円</span>
+    <span class="save">貯金よてい <b>${fmt(rest)}</b> ドラ円 <span class="sub">(+10%利息)</span></span>
+  </div>
+  ${locked?`<div class="card sub">🔒 しめきりずみのため 見るだけです</div>`:""}
+  ${S.questions.map(q=>`
+    <div class="qcard">
+      <div class="qtitle">${q.big?'<span class="oa">大穴</span>':''}${esc(q.title)}</div>
+      ${q.options.map(o=>{
+        const amt = cur.bets[o.id]||0;
+        return `<div class="opt">
+          <span class="lab">${esc(o.label)}</span>
+          <span class="odds">${oddsTxt(o.odds)}</span>
+          ${locked?`<span class="amt ${amt?'nz':'z'}" style="min-width:64px;text-align:right;font-weight:bold">${amt?fmt(amt):"—"}</span>`:`
+          <span class="stepper">
+            <button onclick="betAdd('${cur.id}','${o.id}',-1)">−</button>
+            <span class="amt ${amt?'nz':'z'}">${amt?fmt(amt):"0"}</span>
+            <button onclick="betAdd('${cur.id}','${o.id}',1)">＋</button>
+          </span>`}
+        </div>`;
+      }).join("")}
+    </div>`).join("")}
+  ${locked?"":`
+    <button class="btn big green" onclick="confirmBet('${cur.id}')">✅ このベットで かくてい！</button>
+    <div class="sub center mt">つかわない分（${fmt(rest)}ドラ円）は 貯金になって 利息+10%！</div>
+    ${S.players.every(p=>p.confirmed||p.id===cur.id)?`<button class="btn big warn mt" onclick="lockBets()">🔒 ぜんいん完了なら ベットをしめきる</button>`:""}
+  `}`;
+}
+
+/* ---------- 結果入力 ---------- */
+function scoreAdd(team, delta){
+  const v = (S.score[team]==null?0:S.score[team]) + delta;
+  if(v<0 || v>50) return;
+  S.score[team]=v; upd();
+}
+function autoJudge(){
+  if(S.score.d==null || S.score.g==null){ alert("先に 中日と巨人の 得点を入れてね"); return; }
+  const d=S.score.d, g=S.score.g, sum=d+g;
+  const q1=S.questions.find(q=>q.id==="q1");
+  if(q1) q1.result = d>g ? "q1a" : (g>d ? "q1b" : "q1c");
+  const q2=S.questions.find(q=>q.id==="q2");
+  if(q2) q2.result = sum<=4 ? "q2a" : (sum<=8 ? "q2b" : "q2c");
+  upd();
+}
+function setResult(qid, val){
+  const q = S.questions.find(q=>q.id===qid);
+  q.result = (q.result===val) ? null : val;
+  upd();
+}
+function vResults(){
+  if(S.phase==="betting"||S.phase==="setup"){
+    return `<div class="card"><h2>📝 結果入力（幹事用）</h2>
+      <div class="sub">ベットをしめきってから 入力できるようになります</div>
+      <button class="btn big mt gray" onclick="go('bet')">🪙 ベット画面へ</button></div>`;
+  }
+  const nr = S.questions.filter(q=>q.result!==null).length;
+  return `
+  <div class="card">
+    <h2>📝 結果入力 <span class="sub">（幹事用・${nr}/${S.questions.length} 確定）</span></h2>
+    <div class="sub">試合を見ながら わかったところから タップ。まちがえたら もう一度おすと 取り消し</div>
+    <div class="scorebox">
+      <div class="team d">中日<br>
+        <span class="stepper"><button onclick="scoreAdd('d',-1)">−</button><span class="sc">${S.score.d==null?"-":S.score.d}</span><button onclick="scoreAdd('d',1)">＋</button></span>
+      </div>
+      <div style="font-size:20px">-</div>
+      <div class="team g">巨人<br>
+        <span class="stepper"><button onclick="scoreAdd('g',-1)">−</button><span class="sc">${S.score.g==null?"-":S.score.g}</span><button onclick="scoreAdd('g',1)">＋</button></span>
+      </div>
+    </div>
+    <button class="btn big" onclick="autoJudge()">⚡ 最終スコアから「勝敗」「合計得点」を自動判定</button>
+  </div>
+  ${S.questions.map(q=>`
+    <div class="resq">
+      <div class="t">${q.big?'<span class="oa" style="color:var(--gold);font-size:11px;border:1px solid var(--gold);border-radius:6px;padding:0 4px;margin-right:4px">大穴</span>':''}${esc(q.title)}
+        <span class="st ${q.result!==null?'ok':'ng'}">${q.result!==null?"✓確定":"未定"}</span></div>
+      <div class="obtns">
+        ${q.options.map(o=>`<button class="obtn ${q.result===o.id?'sel':''}" onclick="setResult('${q.id}','${o.id}')">${esc(o.label)}</button>`).join("")}
+        ${q.options.length===1
+          ? `<button class="obtn none ${q.result==='none'?'sel':''}" onclick="setResult('${q.id}','none')">おきなかった</button>`
+          : `<button class="obtn none ${q.result==='none'?'sel':''}" onclick="setResult('${q.id}','none')">どれもなし</button>`}
+        <button class="obtn void ${q.result==='void'?'sel':''}" onclick="setResult('${q.id}','void')">不成立(返金)</button>
+      </div>
+    </div>`).join("")}
+  <div class="card">
+    <button class="btn big gold" onclick="showMid()">📣 中間はっぴょう（いまのランキング）</button>
+    <button class="btn big green mt" onclick="go('settle')">🏆 せいさん・表彰式へ</button>
+    ${S.phase==="locked"?`<button class="btn mini gray mt" onclick="unlockBets()">← ベットしめきりを かいじょ（緊急用）</button>`:""}
+  </div>`;
+}
+function showMid(){
+  const rows = ranking();
+  const html = `
+  <div class="modal-bg" onclick="closeModal(event)">
+    <div class="modal">
+      <h2 style="margin:0 0 4px">📣 中間はっぴょう！</h2>
+      <div class="sub mb">いま確定している分だけの 暫定（ざんてい）資産だよ。「まち」は まだ結果待ちのベット額</div>
+      ${rows.map(r=>`
+        <div class="rankrow">
+          <div class="rk">${r.rank}位</div>
+          <div class="nm">${esc(r.p.name)}</div>
+          <div>
+            <span class="as">${fmt(r.c.asset)}</span><span class="sub">ドラ円</span>
+            ${r.c.pending?`<div class="sub" style="text-align:right;font-size:11px">まち ${fmt(r.c.pending)}</div>`:""}
+          </div>
+        </div>`).join("")}
+      <button class="btn big gray mt" onclick="closeModal()">とじる</button>
+    </div>
+  </div>`;
+  const div = document.createElement("div");
+  div.id = "modalwrap"; div.innerHTML = html;
+  document.body.appendChild(div);
+}
+function closeModal(ev){
+  if(ev && ev.target && !ev.target.classList.contains("modal-bg") && ev.type==="click" && ev.currentTarget!==ev.target) return;
+  const m = $("modalwrap"); if(m) m.remove();
+}
+
+/* ---------- せいさん・表彰 ---------- */
+function doSettle(){
+  const un = S.questions.filter(q=>q.result===null);
+  if(un.length){
+    if(!confirm("まだ未定の項目が "+un.length+"こ あります：\n"+un.map(q=>"・"+q.title).join("\n")+"\n\n未定の項目は【不成立（返金）】として計算します。せいさんに すすみますか？")) return;
+    un.forEach(q=>q.result="void");
+  }
+  S.phase="settled"; S.revealCount=0; S.revealing=false;
+  upd();
+}
+function revealNext(){
+  if(S.revealing) return;
+  S.revealing=true; render();
+  setTimeout(()=>{
+    S.revealing=false;
+    S.revealCount++;
+    upd();
+    if(S.revealCount>=S.players.length) confetti();
+  }, 1000);
+}
+function revealAll(){ S.revealCount=S.players.length; S.revealing=false; upd(); confetti(); }
+function resetReveal(){ S.revealCount=0; upd(); }
+function reopenSettle(){
+  if(!confirm("せいさんを取り消して 結果入力に もどりますか？（入力しなおして もう一度せいさんできます）")) return;
+  S.phase="locked"; S.revealCount=0;
+  S.questions.forEach(q=>{ /* 自動voidはそのまま残す（手で直せる） */ });
+  upd(); go("results");
+}
+function vSettle(){
+  if(S.phase!=="settled"){
+    const nr = S.questions.filter(q=>q.result!==null).length;
+    return `<div class="card"><h2>🏆 せいさん・表彰式</h2>
+      <div class="sub mb">結果の確定：${nr} / ${S.questions.length}</div>
+      ${S.phase==="locked"
+        ? `<button class="btn big gold" onclick="doSettle()">🥁 せいさんする！（表彰式スタート）</button>
+           <div class="sub mt">※未定の項目があるときは「不成立（返金）」あつかいで計算します</div>`
+        : `<div class="sub">ベットをしめきると せいさんできます</div>`}
+    </div>`;
+  }
+  const rows = ranking();                       // 1位→ビリ
+  const asc = [...rows].reverse();              // ビリ→1位（発表順）
+  const revealedIds = new Set(asc.slice(0, S.revealCount).map(r=>r.p.id));
+  const done = S.revealCount>=rows.length;
+  const winner = rows[0];
+  return `
+  ${done?`<div class="winbanner">
+    <div class="crown">👑</div>
+    <div class="wname">${esc(winner.p.name)} さん 優勝！</div>
+    <div style="color:var(--gold);font-weight:bold">${fmt(winner.c.asset)} ドラ円</div>
+    <div class="sub mt">🍀どんまい賞：${esc(rows[rows.length-1].p.name)} さん</div>
+  </div>`:""}
+  <div class="card">
+    <h2>🏆 表彰式 <span class="sub">ビリから発表！</span></h2>
+    ${S.revealing?`<div class="drum">🥁 ドコドコドコドコ…</div>`:""}
+    ${rows.map((r,i)=>{
+      const shown = revealedIds.has(r.p.id);
+      return `<div class="rankrow ${shown&&r.rank===1?'top1':''}" style="${shown?"":"opacity:.45"}">
+        <div class="rk">${shown?(r.rank===1?"👑":r.rank+"位"):"？"}</div>
+        <div class="nm">${shown?esc(r.p.name):"？？？"}${shown&&r.rank===rows[rows.length-1].rank&&rows.length>1?' <span class="badge">🍀どんまい賞</span>':''}</div>
+        <div class="as">${shown?fmt(r.c.asset)+" ":"???"}<span class="sub">ドラ円</span></div>
+      </div>`;
+    }).join("")}
+    ${done
+      ? `<button class="btn big gold mt" onclick="go('kakeibo')">📒 みんなの家計簿を見る</button>
+         <button class="btn mini gray mt" onclick="resetReveal()">もう一回 発表する</button>`
+      : `<button class="btn big gold mt" onclick="revealNext()" ${S.revealing?"disabled":""}>🥁 つぎを発表！（のこり${rows.length-S.revealCount}人）</button>
+         <button class="btn mini gray mt" onclick="revealAll()">ぜんぶ表示</button>`}
+    <button class="btn mini gray mt" onclick="reopenSettle()">← 結果入力にもどる（やりなおし）</button>
+  </div>`;
+}
+
+/* ---------- 家計簿 ---------- */
+function vKakeibo(){
+  if(S.players.length===0) return `<div class="card sub">メンバーがいません</div>`;
+  const pid = S.curKakeibo && player(S.curKakeibo) ? S.curKakeibo : S.players[0].id;
+  const p = player(pid);
+  const c = calc(p);
+  const stMark = {hit:"🎯", miss:"✖", void:"↩", pend:"⏳"};
+  const stCls  = {hit:"hit", miss:"miss", void:"pend", pend:"pend"};
+  return `
+  <div class="card">
+    <h2>📒 きょうの家計簿</h2>
+    <div class="row">${S.players.map(x=>`<span class="chip ${x.id===pid?'on':''}" onclick="S.curKakeibo='${x.id}';upd()">${esc(x.name)}</span>`).join("")}</div>
+  </div>
+  <div class="kkb">
+    <h3>⚾ ${esc(p.name)} さんの きょうの家計簿 ${p.child?"👶":""}</h3>
+    <table>
+      <tr><td>きょうの おこづかい</td><td class="v plus">＋${fmt(RULE.start)}</td></tr>
+      <tr><td>ベットに つかったお金</td><td class="v minus">−${fmt(c.total)}</td></tr>
+      <tr><td>貯金に まわしたお金</td><td class="v">${fmt(c.savings)}</td></tr>
+      <tr><td>貯金の利息（+10%）</td><td class="v plus">＋${fmt(c.interest)}</td></tr>
+      <tr><td>あたった配当${p.child?"（👶1.2倍こみ）":""}</td><td class="v plus">＋${fmt(c.payout)}</td></tr>
+      ${c.refund?`<tr><td>返金（不成立）</td><td class="v plus">＋${fmt(c.refund)}</td></tr>`:""}
+      <tr class="total"><td>さいごの おかね</td><td class="v">${fmt(c.asset)} ドラ円</td></tr>
+    </table>
+    ${c.detail.length?`<div class="hitlist">
+      ${c.detail.map(d=>`${stMark[d.st]} ${esc(d.q.title)}「${esc(d.o.label)}」に ${fmt(d.amt)} ${d.st==="hit"?`→ <b>＋${fmt(d.win)}</b>`:d.st==="miss"?"→ はずれ":d.st==="void"?"→ 返金":"→ 結果まち"}`).join("<br>")}
+    </div>`:`<div class="hitlist">ベットなし（ぜんぶ貯金！かたい！）</div>`}
+    <div class="hitlist" style="text-align:center;margin-top:10px">— 2026.7.4 中日×巨人 @バンテリンドーム／ドラ円バトル —</div>
+  </div>
+  <div class="sub center">📸 スクショして きねんに のこそう！</div>
+  <button class="btn big gray mt" onclick="go('settle')">← 表彰式にもどる</button>`;
+}
+
+/* ---------- オッズ編集（幹事） ---------- */
+function setOdds(qid, optId, val){
+  const v = parseFloat(val);
+  if(!(v>=1.1 && v<=99)){ alert("オッズは 1.1〜99 で入れてください"); render(); return; }
+  const q=S.questions.find(q=>q.id===qid);
+  q.options.find(o=>o.id===optId).odds = Math.round(v*10)/10;
+  upd();
+}
+function delQ(qid){
+  const q=S.questions.find(q=>q.id===qid);
+  if(!confirm("「"+q.title+"」を けしますか？（この項目へのベットは のこりに もどります）")) return;
+  const ids = q.options.map(o=>o.id);
+  S.players.forEach(p=>ids.forEach(id=>delete p.bets[id]));
+  S.questions = S.questions.filter(x=>x.id!==qid);
+  upd();
+}
+function addCustomQ(){
+  const t = ($("cq_title").value||"").trim();
+  const l1 = ($("cq_l1").value||"").trim(), d1 = parseFloat($("cq_d1").value);
+  const l2 = ($("cq_l2").value||"").trim(), d2 = parseFloat($("cq_d2").value);
+  if(!t || !l1 || !(d1>=1.1&&d1<=99)){ alert("項目名・選択肢1・オッズ1（1.1〜99）を入れてください"); return; }
+  const id = "cq"+(S.seq++);
+  const options=[{id:id+"a", label:l1, odds:Math.round(d1*10)/10}];
+  if(l2 && d2>=1.1 && d2<=99) options.push({id:id+"b", label:l2, odds:Math.round(d2*10)/10});
+  S.questions.push({id, title:t, big:options.length===1, options, result:null});
+  upd();
+}
+function vOdds(){
+  const locked = S.phase==="locked"||S.phase==="settled";
+  return `
+  <div class="card">
+    <h2>⚙️ オッズ編集 <span class="sub">（幹事用）</span></h2>
+    <div class="sub">${locked?"🔒 しめきり後は へんこうできません":"ベットしめきり前だけ へんこうできます。ローカルネタ（例：ドアラがバク転成功 ×3）の追加もどうぞ"}</div>
+  </div>
+  ${S.questions.map(q=>`
+    <div class="qcard">
+      <div class="qtitle">${q.big?'<span class="oa">大穴</span>':''}${esc(q.title)}
+        ${locked?"":`<button class="btn mini warn" style="float:right" onclick="delQ('${q.id}')">けす</button>`}</div>
+      ${q.options.map(o=>`
+        <div class="opt">
+          <span class="lab">${esc(o.label)}</span>
+          ${locked?`<span class="odds">${oddsTxt(o.odds)}</span>`:`
+          <span style="display:flex;align-items:center;gap:4px">×<input type="number" step="0.1" min="1.1" max="99" value="${o.odds}" style="width:76px;padding:8px"
+            onchange="setOdds('${q.id}','${o.id}',this.value)"></span>`}
+        </div>`).join("")}
+    </div>`).join("")}
+  ${locked?"":`
+  <div class="card">
+    <h2>＋ 項目をついか</h2>
+    <input type="text" id="cq_title" placeholder="項目名（例：ドアラがバク転を成功させる）" class="mb">
+    <div class="row mb"><input type="text" id="cq_l1" placeholder="選択肢1（例：成功する）" style="flex:2"><input type="number" id="cq_d1" placeholder="オッズ" step="0.1" style="flex:1"></div>
+    <div class="row mb"><input type="text" id="cq_l2" placeholder="選択肢2（省略で一択の大穴に）" style="flex:2"><input type="number" id="cq_d2" placeholder="オッズ" step="0.1" style="flex:1"></div>
+    <button class="btn big" onclick="addCustomQ()">ついかする</button>
+  </div>`}
+  <button class="btn big gray" onclick="go('home')">← ホームへもどる</button>`;
+}
+
+/* ---------- リセット・紙吹雪 ---------- */
+function resetAll(){
+  if(!confirm("すべてのデータ（メンバー・ベット・結果）を けして さいしょから はじめますか？")) return;
+  if(!confirm("ほんとうに リセットしますか？ もとに もどせません！")) return;
+  S = newState(); upd();
+}
+function confetti(){
+  const colors=["#ffd75e","#4da3ff","#ff9b3d","#5ce0a1","#ff7a7a","#c792ff"];
+  for(let i=0;i<70;i++){
+    const d=document.createElement("div");
+    d.className="confetti-p";
+    const sz=6+Math.random()*8;
+    d.style.cssText=`left:${Math.random()*100}vw;width:${sz}px;height:${sz*1.4}px;background:${colors[i%colors.length]};animation-duration:${2.5+Math.random()*2.5}s;animation-delay:${Math.random()*1.2}s;`;
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(), 7000);
+  }
+}
+
+render();
+</script>
+</body>
+</html>
